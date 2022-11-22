@@ -12,7 +12,7 @@ use riscv::register::{
 };
 
 use crate::syscall::syscall;
-use crate::batch::run_next_app;
+//use crate::batch::run_next_app;
 
 #[no_mangle]
 
