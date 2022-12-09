@@ -1,3 +1,4 @@
+use riscv::register::sstatus::{Sstatus, self, SPP};
 
 #[repr(C)]
 pub struct TrapContext {
@@ -5,8 +6,6 @@ pub struct TrapContext {
     pub sstatus: Sstatus,
     pub sepc: usize,
 }
-
-use riscv::register::sstatus::{Sstatus, self, SPP};
 
 impl TrapContext {
     pub fn set_sp(&mut self, sp: usize) { self.x[2] = sp; }
@@ -22,3 +21,4 @@ impl TrapContext {
         cx
     }
 }
+

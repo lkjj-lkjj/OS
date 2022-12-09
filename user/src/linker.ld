@@ -29,3 +29,4 @@ SECTIONS
         *(.debug*)
     }
 }
+

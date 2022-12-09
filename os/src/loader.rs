@@ -1,5 +1,4 @@
 use core::arch::asm;
-
 use crate::trap::TrapContext;
 use crate::task::TaskContext;
 use crate::config::*;
@@ -46,6 +45,7 @@ impl UserStack {
         self.data.as_ptr() as usize + USER_STACK_SIZE
     }
 }
+
 fn get_base_i(app_id: usize) -> usize {
     APP_BASE_ADDRESS + app_id * APP_SIZE_LIMIT
 }
