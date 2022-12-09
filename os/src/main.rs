@@ -5,6 +5,9 @@
 
 use core::arch::global_asm;
 
+#[macro_use]
+extern crate bitflags;
+
 extern crate alloc;
 
 #[macro_use]
