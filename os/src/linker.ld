@@ -10,9 +10,12 @@ SECTIONS
     stext = .;
     .text : {
         *(.text.entry)
+        . = ALIGN(4K);
+        strampoline = .;
+        *(.text.trampoline);
+        . = ALIGN(4K);
         *(.text .text.*)
     }
-
     . = ALIGN(4K);
     etext = .;
     srodata = .;
@@ -20,7 +23,6 @@ SECTIONS
         *(.rodata .rodata.*)
         *(.srodata .srodata.*)
     }
-
     . = ALIGN(4K);
     erodata = .;
     sdata = .;
