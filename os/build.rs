@@ -23,11 +23,11 @@ fn insert_app_data() -> Result<()> {
     apps.sort();
 
     writeln!(f, r#"
-    .align 3
-    .section .data
-    .global _num_app
-_num_app:
-    .quad {}"#, apps.len())?;
+    .global _app_names
+_app_names:"#)?;
+    for app in apps.iter() {
+        writeln!(f, r#"    .string "{}""#, app)?;
+    }
 
     for i in 0..apps.len() {
         writeln!(f, r#"    .quad app_{}_start"#, i)?;
