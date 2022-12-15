@@ -83,11 +83,10 @@ impl From<VirtPageNum> for VirtAddr {
     fn from(v: VirtPageNum) -> Self { Self(v.0 << PAGE_SIZE_BITS) }
 }
 impl PhysAddr {
-    pub fn get_mut<T>(&self) -> &'static mut T {
-        unsafe {
-            (self.0 as *mut T).as_mut().unwrap()
-        }
-    }
+    pub fn floor(&self) -> PhysPageNum { PhysPageNum(self.0 / PAGE_SIZE) }
+    pub fn ceil(&self) -> PhysPageNum { PhysPageNum((self.0 - 1 + PAGE_SIZE) / PAGE_SIZE) }
+    pub fn page_offset(&self) -> usize { self.0 & (PAGE_SIZE - 1) }
+    pub fn aligned(&self) -> bool { self.page_offset() == 0 }
 }
 impl From<PhysAddr> for PhysPageNum {
     fn from(v: PhysAddr) -> Self {
@@ -111,6 +110,13 @@ impl VirtPageNum {
     }
 }
 
+impl PhysAddr {
+    pub fn get_mut<T>(&self) -> &'static mut T {
+        unsafe {
+            (self.0 as *mut T).as_mut().unwrap()
+        }
+    }
+}
 impl PhysPageNum {
     pub fn get_pte_array(&self) -> &'static mut [PageTableEntry] {
         let pa: PhysAddr = self.clone().into();
@@ -126,9 +132,7 @@ impl PhysPageNum {
     }
     pub fn get_mut<T>(&self) -> &'static mut T {
         let pa: PhysAddr = self.clone().into();
-        unsafe {
-            (pa.0 as *mut T).as_mut().unwrap()
-        }
+        pa.get_mut()
     }
 }
 

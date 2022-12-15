@@ -4,4 +4,7 @@ app_0: 00power_3
 app_1: 01power_5
 app_2: 02power_7
 app_3: 03sleep
-app_4: test
+app_4: initproc
+app_5: sleep
+app_6: test
+app_7: user_shell

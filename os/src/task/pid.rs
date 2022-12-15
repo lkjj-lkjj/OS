@@ -8,12 +8,6 @@ use crate::config::{
     KERNEL_STACK_SIZE,
 };
 
-pub struct KernelStack {
-    pid: usize,
-}
-
-pub struct PidHandle(pub usize);
-
 struct PidAllocator {
     current: usize,
     recycled: Vec<usize>,
@@ -50,9 +44,7 @@ lazy_static! {
     };
 }
 
-pub fn pid_alloc() -> PidHandle {
-    PID_ALLOCATOR.exclusive_access().alloc()
-}
+pub struct PidHandle(pub usize);
 
 impl Drop for PidHandle {
     fn drop(&mut self) {
@@ -61,11 +53,20 @@ impl Drop for PidHandle {
     }
 }
 
+pub fn pid_alloc() -> PidHandle {
+    PID_ALLOCATOR.exclusive_access().alloc()
+}
+
+
 /// Return (bottom, top) of a kernel stack in kernel space.
 pub fn kernel_stack_position(app_id: usize) -> (usize, usize) {
     let top = TRAMPOLINE - app_id * (KERNEL_STACK_SIZE + PAGE_SIZE);
     let bottom = top - KERNEL_STACK_SIZE;
     (bottom, top)
+}
+
+pub struct KernelStack {
+    pid: usize,
 }
 
 impl KernelStack {
